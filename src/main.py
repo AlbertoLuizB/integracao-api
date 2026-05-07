@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from src.api.v1.router import api_router
+from src.core.exceptions import APIException, api_exception_handler
 
 app = FastAPI(
     title="API de Agregação de Dados Climáticos e Geográficos",
@@ -15,6 +17,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Registrando Handlers de Exceção Personalizados
+app.add_exception_handler(APIException, api_exception_handler)
+
+# Registrando Rotas da v1
+app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/")
 def read_root():

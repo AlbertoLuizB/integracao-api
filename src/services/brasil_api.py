@@ -24,7 +24,7 @@ class BrasilAPIService:
                 status_code=503,
                 code="SERVICO_EXTERNO_INDISPONIVEL",
                 message="Não foi possível obter dados do serviço externo. Tente novamente em alguns instantes",
-                extra_data={"servico": "Brasil API (IBGE)"}
+                extra_data={"servico": "IBGE"}
             )
             
         if response.status_code == 404:
@@ -40,7 +40,7 @@ class BrasilAPIService:
                 status_code=503,
                 code="SERVICO_EXTERNO_INDISPONIVEL",
                 message="Falha de comunicação com o serviço externo.",
-                extra_data={"servico": "Brasil API (IBGE)"}
+                extra_data={"servico": "IBGE"}
             )
             
         return response.json()
@@ -55,7 +55,7 @@ class BrasilAPIService:
                 status_code=503,
                 code="SERVICO_EXTERNO_INDISPONIVEL",
                 message="Não foi possível obter dados do serviço externo. Tente novamente em alguns instantes",
-                extra_data={"servico": "Brasil API (CPTEC)"}
+                extra_data={"servico": "CPTEC"}
             )
             
         if response.status_code == 404:
@@ -72,7 +72,7 @@ class BrasilAPIService:
                 status_code=503,
                 code="SERVICO_EXTERNO_INDISPONIVEL",
                 message="Falha de comunicação com o serviço externo.",
-                extra_data={"servico": "Brasil API (CPTEC)"}
+                extra_data={"servico": "CPTEC"}
             )
             
         data = response.json()
@@ -96,7 +96,7 @@ class BrasilAPIService:
                 status_code=503,
                 code="SERVICO_EXTERNO_INDISPONIVEL",
                 message="Não foi possível obter dados do serviço externo. Tente novamente em alguns instantes",
-                extra_data={"servico": "Brasil API (CPTEC Clima)"}
+                extra_data={"servico": "CPTEC"}
             )
             
         if response.status_code != 200:
@@ -104,7 +104,7 @@ class BrasilAPIService:
                 status_code=503,
                 code="SERVICO_EXTERNO_INDISPONIVEL",
                 message="Falha de comunicação com o serviço externo.",
-                extra_data={"servico": "Brasil API (CPTEC Clima)"}
+                extra_data={"servico": "CPTEC"}
             )
             
         return response.json()

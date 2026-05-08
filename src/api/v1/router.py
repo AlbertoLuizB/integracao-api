@@ -1,5 +1,7 @@
 from fastapi import APIRouter
-from . import health, cidades, clima
+from . import health
+from . import cidades
+from . import clima
 
 api_router = APIRouter()
 

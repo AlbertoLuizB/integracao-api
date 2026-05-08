@@ -20,28 +20,6 @@ Esta é uma API RESTful desenvolvida em **Python** utilizando **FastAPI** para a
 
 ---
 
-## 🔄 Fluxo de Integração
-
-Abaixo está a representação da arquitetura e do fluxo de chamadas feito pela aplicação:
-
-```mermaid
-sequenceDiagram
-    participant Cliente
-    participant Nossa API
-    participant Brasil API (IBGE)
-    participant Brasil API (CPTEC)
-
-    Cliente->>Nossa API: GET /api/v1/clima/{nome_cidade}
-    Nossa API->>Brasil API (CPTEC): Busca código da cidade pelo nome
-    Brasil API (CPTEC)-->>Nossa API: Retorna ID da cidade e UF
-    Nossa API->>Brasil API (CPTEC): Busca clima usando o ID da cidade
-    Brasil API (CPTEC)-->>Nossa API: Retorna previsão e dados meteorológicos
-    Nossa API->>Nossa API: Combina dados geográficos + climáticos
-    Nossa API-->>Cliente: Resposta JSON final padronizada
-```
-
----
-
 ## 🚀 Instalação e Execução
 
 ### Pré-requisitos
@@ -98,9 +76,3 @@ $env:PYTHONPATH="."; pytest tests/
 # No Linux/Mac:
 PYTHONPATH=. pytest tests/
 ```
-
----
-
-## 👥 Equipe Desenvolvedora
-
-Para mais informações sobre os integrantes envolvidos neste projeto, papéis (Desenvolvimento Backend, Integração, Qualidade, Documentação) e respectivas matrículas, acesse o documento [INTEGRANTES.md](INTEGRANTES.md).

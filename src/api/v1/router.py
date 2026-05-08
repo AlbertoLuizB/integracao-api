@@ -1,7 +1,8 @@
 from fastapi import APIRouter
-from . import health
+from . import health, cidades, clima
 
 api_router = APIRouter()
 
 api_router.include_router(health.router)
-# Posteriormente adicionaremos aqui as rotas de "cidades" e "clima"
+api_router.include_router(cidades.router)
+api_router.include_router(clima.router)

@@ -24,9 +24,7 @@ def test_buscar_clima_cidade_nao_encontrada():
     assert response.status_code == 404
     data = response.json()
     
-    # Verifica o formato exato de erro especificado
     assert data["erro"] is True
     assert data["codigo"] == "CIDADE_NAO_ENCONTRADA"
     assert "mensagem" in data
     assert data["nome_informado"] == "CidadeInexistenteXYZ"
-

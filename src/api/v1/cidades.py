@@ -20,13 +20,10 @@ async def get_cidades_por_estado(
             extra_data={"sigla_uf_informada": sigla_uf}
         )
 
-    # Busca cidades no IBGE via Brasil API
     cidades_data = await brasil_api_service.get_cidades_por_estado(sigla_uf)
     
-    # Limita o número de cidades
     cidades_limitadas = cidades_data[:limite]
     
-    # Mapeia para o formato de saída exigido
     cidades_formatadas = [{"nome": cidade["nome"]} for cidade in cidades_limitadas]
     
     return {

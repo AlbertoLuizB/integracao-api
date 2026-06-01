@@ -9,7 +9,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configuração CORS (Habilitado para testes via navegador)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,10 +17,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Registrando Handlers de Exceção Personalizados
 app.add_exception_handler(APIException, api_exception_handler)
 
-# Registrando Rotas da v1
 app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/")

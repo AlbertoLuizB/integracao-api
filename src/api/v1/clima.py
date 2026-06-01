@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from src.core.exceptions import APIException
-from src.services.brasil_api_service import brasil_api_service
+from src.services.open_meteo_service import open_meteo_service
 from datetime import datetime, timezone
 
 router = APIRouter()
@@ -15,42 +15,35 @@ async def get_clima_cidade(nome_cidade: str):
             extra_data={"nome_informado": nome_cidade}
         )
 
-    # 1. Busca código e estado da cidade
-    cidade_info = await brasil_api_service.get_cidade_cptec(nome_cidade)
-    city_code = cidade_info.get("id")
+    cidade_info = await open_meteo_service.get_coordinates_by_city_name(nome_cidade)
+    lat = cidade_info.get("latitude")
+    lon = cidade_info.get("longitude")
     estado = cidade_info.get("estado")
     nome = cidade_info.get("nome")
 
-    if not city_code:
-        raise APIException(
-            status_code=404,
-            code="CIDADE_NAO_ENCONTRADA",
-            message="Nenhuma cidade encontrada com o nome informado",
-            extra_data={"nome_informado": nome_cidade}
-        )
-
-    # 2. Busca previsão do clima (hoje)
-    previsao_info = await brasil_api_service.get_clima_cptec(city_code)
+    clima_data = await open_meteo_service.get_weather_by_coordinates(lat, lon)
     
-    # A Brasil API CPTEC Clima retorna uma lista "clima", usaremos o primeiro dia (hoje)
-    lista_clima = previsao_info.get("clima", [])
-    if not lista_clima:
-         raise APIException(
-            status_code=404,
-            code="CLIMA_NAO_ENCONTRADO",
-            message="Dados climáticos não encontrados para a cidade",
-            extra_data={"nome_informado": nome_cidade}
-        )
+    current = clima_data.get("current", {})
+    daily = clima_data.get("daily", {})
+
+    temp_max = daily.get("temperature_2m_max", [None])[0]
+    temp_min = daily.get("temperature_2m_min", [None])[0]
+    
+    if temp_max is not None:
+        temp_max = round(temp_max)
+    if temp_min is not None:
+        temp_min = round(temp_min)
         
-    clima_hoje = lista_clima[0]
+    weather_code = current.get("weather_code")
+    condicao_texto = open_meteo_service.get_condicao_descricao(weather_code)
 
     return {
         "nome": nome,
         "estado": estado,
         "clima": {
-            "temperatura_min": clima_hoje.get("min"),
-            "temperatura_max": clima_hoje.get("max"),
-            "condicao": clima_hoje.get("condicao_desc", clima_hoje.get("condicao")),
+            "temperatura_min": temp_min,
+            "temperatura_max": temp_max,
+            "condicao": condicao_texto,
             "unidades": {
                 "temperatura": "°C"
             }

@@ -45,7 +45,6 @@ class BrasilAPIService:
                         message="Nenhuma cidade encontrada com o nome informado",
                         extra_data={"nome_informado": nome_cidade}
                     )
-                # Se retornar uma lista, retorna a primeira cidade
                 return cidades[0] if isinstance(cidades, list) else cidades
             except httpx.RequestError:
                 raise APIException(

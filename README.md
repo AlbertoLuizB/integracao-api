@@ -7,13 +7,13 @@
 
 > **Projeto Acadêmico:** Atividade avaliativa desenvolvida para a disciplina de **Técnicas de Integração de Sistemas (N703)**.
 
-Esta é uma API RESTful desenvolvida em **Python** utilizando **FastAPI** para a agregação de dados climáticos e geográficos. O objetivo do projeto é fornecer endpoints unificados que processam dinamicamente informações de localidades (buscando apenas pelo nome da cidade) e combinam dados do IBGE com métricas climáticas do CPTEC/INPE (através da Brasil API).
+Esta é uma API RESTful desenvolvida em **Python** utilizando **FastAPI** para a agregação de dados climáticos e geográficos. O objetivo do projeto é fornecer endpoints unificados que processam dinamicamente informações de localidades (buscando apenas pelo nome da cidade) e combinam dados do IBGE com métricas climáticas utilizando a Brasil API e as APIs de Geocoding e Previsão do Open-Meteo.
 
 ---
 
 ## ✨ Funcionalidades
 
-- **Busca Integrada:** Informando apenas o nome da cidade, a API busca seu código geográfico e consome os dados climáticos sem o uso de coordenadas fixas.
+- **Busca Integrada e Coordenadas Dinâmicas:** Informando apenas o nome da cidade, a API busca dinamicamente suas coordenadas geográficas e consome os dados climáticos, cumprindo a restrição de não usar coordenadas fixas no código.
 - **Listagem de Municípios:** Consulta paginada de todas as cidades de um estado específico através de sua sigla (UF).
 - **Tratamento Robusto de Erros:** Respostas padronizadas para cidades/estados não encontrados (404), parâmetros inválidos (400) e falha de serviços de terceiros (503).
 - **Monitoramento:** Endpoint de *Health Check* para garantir a disponibilidade do serviço interno e da comunicação com APIs externas.
@@ -30,7 +30,7 @@ Esta é uma API RESTful desenvolvida em **Python** utilizando **FastAPI** para a
 
 1. **Clone este repositório:**
    ```bash
-   git clone <link-do-repositorio>
+   git clone https://github.com/AlbertoLuizB/integracao-api.git
    cd Integracao_sistema
    ```
 

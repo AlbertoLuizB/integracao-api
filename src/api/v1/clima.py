@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from src.core.exceptions import APIException
-from src.services.open_meteo_service import open_meteo_service
+from src.services.brasil_api_service import brasil_api_service
 from datetime import datetime, timezone
 
 router = APIRouter()
@@ -15,27 +15,31 @@ async def get_clima_cidade(nome_cidade: str):
             extra_data={"nome_informado": nome_cidade}
         )
 
-    cidade_info = await open_meteo_service.get_coordinates_by_city_name(nome_cidade)
-    lat = cidade_info.get("latitude")
-    lon = cidade_info.get("longitude")
-    estado = cidade_info.get("estado")
+    # 1. Busca a cidade pelo nome usando CPTEC para pegar o ID, Nome correto e Estado
+    cidade_info = await brasil_api_service.get_cidade_cptec(nome_cidade)
+    city_code = cidade_info.get("id")
     nome = cidade_info.get("nome")
+    estado = cidade_info.get("estado")
 
-    clima_data = await open_meteo_service.get_weather_by_coordinates(lat, lon)
+    # 2. Busca a previsão do clima usando o ID da cidade
+    clima_data = await brasil_api_service.get_clima_cptec(city_code)
     
-    current = clima_data.get("current", {})
-    daily = clima_data.get("daily", {})
+    previsoes = clima_data.get("clima", [])
+    
+    if not previsoes:
+        raise APIException(
+            status_code=404,
+            code="CLIMA_NAO_ENCONTRADO",
+            message="Não foi possível encontrar a previsão do tempo para esta cidade.",
+            extra_data={"cidade": nome}
+        )
 
-    temp_max = daily.get("temperature_2m_max", [None])[0]
-    temp_min = daily.get("temperature_2m_min", [None])[0]
+    # Pegamos a previsão do dia atual (o primeiro da lista)
+    previsao_hoje = previsoes[0]
     
-    if temp_max is not None:
-        temp_max = round(temp_max)
-    if temp_min is not None:
-        temp_min = round(temp_min)
-        
-    weather_code = current.get("weather_code")
-    condicao_texto = open_meteo_service.get_condicao_descricao(weather_code)
+    temp_min = previsao_hoje.get("min")
+    temp_max = previsao_hoje.get("max")
+    condicao_texto = previsao_hoje.get("condicao_desc", "Não informada")
 
     return {
         "nome": nome,

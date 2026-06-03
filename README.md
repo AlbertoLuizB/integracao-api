@@ -31,7 +31,7 @@ Esta é uma API RESTful desenvolvida em **Python** utilizando **FastAPI** para a
 1. **Clone este repositório:**
    ```bash
    git clone https://github.com/AlbertoLuizB/integracao-api.git
-   cd Integracao_sistema
+   cd integracao-api
    ```
 
 2. **Instale as dependências:**

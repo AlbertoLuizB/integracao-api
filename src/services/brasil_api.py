@@ -8,7 +8,6 @@ class BrasilAPIService:
         """Faz um ping rápido na API para verificar se está online."""
         try:
             async with httpx.AsyncClient(timeout=3.0) as client:
-                # Buscando lista de estados IBGE por ser um endpoint leve e estático
                 response = await client.get(f"{self.BASE_URL}/ibge/uf/v1")
                 return response.status_code == 200
         except Exception:
@@ -59,7 +58,6 @@ class BrasilAPIService:
             )
             
         if response.status_code == 404:
-            # Brasil API retorna 404 quando não encontra a cidade
             raise APIException(
                 status_code=404,
                 code="CIDADE_NAO_ENCONTRADA",

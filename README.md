@@ -36,7 +36,7 @@ Esta é uma API RESTful desenvolvida em **Python** utilizando **FastAPI** para a
 
 2. **Instale as dependências:**
    ```bash
-   pip install -r requirements.txt
+   pip install fastapi uvicorn pydantic pydantic-settings httpx pytest pytest-asyncio
    ```
 
 3. **Inicie o servidor localmente:**
